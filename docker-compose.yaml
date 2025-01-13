@@ -1,0 +1,52 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ${APP_NAME}-app
+    env_file:
+      - .env
+    depends_on:
+      - db
+    ports:
+      - "8000:80"
+      - "8443:443"  # Expor a porta 443 para HTTPS
+
+  db:
+    image: mysql:5.7
+    container_name: ${DB_HOST}
+    hostname: ${DB_CONNECTION}
+    environment:
+      MYSQL_DATABASE: $DB_DATABASE
+      MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
+    healthcheck:
+      test: mysqladmin --user=$DB_USERNAME --password=$DB_PASSWORD ping
+      start_period: 360s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./volumes/mysql:/var/lib/mysql
+
+  redis:
+    image: redis:alpine
+    container_name: ${APP_NAME}-redis
+    hostname: ${REDIS_HOST}
+    ports:
+      - "6379:6379"
+
+  mailpit:
+    image: axllent/mailpit
+    container_name: ${APP_NAME}-mailpit
+    hostname: ${MAILPIT_HOST}
+    restart: unless-stopped
+    volumes:
+      - ./volumes/mailpit:/data
+    ports:
+      - "8825:8025"
+      - "1025:1025"
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATABASE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
