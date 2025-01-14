@@ -41,15 +41,10 @@ docker exec sendportal-app sh -c /usr/local/bin/php /var/www/html/artisan schedu
 
 🛑*Esse comando não está preparado para permitir o recebimento do código do workspace à ser processado, portanto ao ser executado ele o fará sequencialmente o processamento de todos os processos agendados sequencialmente.*
 
-### Processamento de bounces
-Não há informações na documentação sobre o processamento de [bounces](https://en.wikipedia.org/wiki/Bounce_message) e [complaints](https://aws.amazon.com/pt/blogs/messaging-and-targeting/amazon-ses-set-up-notifications-for-bounces-and-complaints/) mas foi localizado no código o código para recebimento das respostas por webhook (não testado):
-
-https://github.com/mettle/sendportal-core/blob/master/src/Listeners/Webhooks/HandleSesWebhook.php
-
 
 ## 🔬Análise técnica
 
-**DATA DESTA AVALIÇÃO: 13/01/2025**
+**DATA DESTA AVALIÇÃO: 14/01/2025**
 
 O [website](https://sendportal.io/) é um arquétipo de aplicação que pode ser utilizado para viabilizar o envio de e-mails em massa em outras aplicações. Foi construído em Laravel e utiliza amplamente os recursos do framework, mesmo que de forma simplificada.
 
